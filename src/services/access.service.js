@@ -16,13 +16,12 @@ const RoleShop = {
 };
 
 class AccessService {
+    // step 1: check email is dbs
+    // step 2: match password
+    // step 3: create AT vs RT and save
+    // step 4: generate tokens
+    // step 5: get data return login
     static singIn = async ({ email, password, refreshToken = null }) => {
-        // step 1: check email is dbs
-        // step 2: match password
-        // step 3: create AT vs RT and save
-        // step 4: generate tokens
-        // step 5: get data return login
-
         // step 1: check email is dbs
         const foundShop = await findByEmail({ email });
 
@@ -55,6 +54,7 @@ class AccessService {
             tokens,
         };
     };
+
     static signUp = async ({ name, email, password }) => {
         const holderShop = await shopModel.findOne({ email }).lean();
         if (holderShop) {
@@ -70,7 +70,6 @@ class AccessService {
             const publicKey = crypto.randomBytes(64).toString("hex");
             const privateKey = crypto.randomBytes(64).toString("hex");
 
-            console.log({ publicKey, privateKey });
             const keyStore = await KeyTokenService.createKeyToken({
                 userId: newShop._id,
                 publicKey,
@@ -83,7 +82,6 @@ class AccessService {
 
             //create token pair
             const tokens = await createTokenPair({ userId: newShop._id, email }, publicKey, privateKey);
-            console.log(`Create Token Success::`, tokens);
 
             return {
                 code: 201,
@@ -97,6 +95,11 @@ class AccessService {
             code: 200,
             metadata: null,
         };
+    };
+
+    static singOut = async (keyStore) => {
+        const delKey = await KeyTokenService.removeKeyById(keyStore._id);
+        return delKey;
     };
 }
 
