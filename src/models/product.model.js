@@ -58,6 +58,10 @@ const clothingSchema = new Schema(
         },
         size: String,
         material: String,
+        product_shop: {
+            type: Schema.Types.ObjectId,
+            ref: "Shop",
+        },
     },
     {
         collection: "clothes",
@@ -65,14 +69,18 @@ const clothingSchema = new Schema(
     }
 );
 
-const ElectronicsSchema = new Schema(
+const electronicSchema = new Schema(
     {
-        manfactures: {
+        manufactures: {
             type: String,
             require: true,
         },
         model: String,
         color: String,
+        product_shop: {
+            type: Schema.Types.ObjectId,
+            ref: "Shop",
+        },
     },
     {
         collection: "electronics",
@@ -83,6 +91,6 @@ const ElectronicsSchema = new Schema(
 //Export the model
 module.exports = {
     product: model(DOCUMENT_NAME, productSchema),
-    clothes: model("clothes", clothingSchema),
-    electronics: model("electronics", ElectronicsSchema),
+    clothes: model("Clothes", clothingSchema),
+    electronics: model("Electronics", electronicSchema),
 };

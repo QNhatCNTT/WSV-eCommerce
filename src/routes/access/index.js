@@ -3,7 +3,7 @@
 const accessController = require("../../controllers/access.controller");
 const express = require("express");
 const { asyncHandle } = require("../../helpers/asyncHandle");
-const { authentication } = require("../../auth/authUltils");
+const { authenticationV2 } = require("../../auth/authUltils");
 const router = express.Router();
 
 //sign up
@@ -12,7 +12,7 @@ router.post("/shop/signup", asyncHandle(accessController.signUp));
 router.post("/shop/signin", asyncHandle(accessController.singIn));
 
 //authentication
-router.use(authentication);
+router.use(authenticationV2);
 ////////////
 //sign out
 router.post("/shop/signout", asyncHandle(accessController.singOut));

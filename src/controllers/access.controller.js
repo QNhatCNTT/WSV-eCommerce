@@ -1,6 +1,5 @@
 "use strict";
 
-const express = require("express");
 const AccessService = require("../services/access.service");
 const { SuccessResponse, CREATED } = require("../core/success.response");
 
