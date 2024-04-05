@@ -3,7 +3,6 @@
 const mongoose = require("mongoose");
 const { db: { name, user, pass, url }} = require("../configs/config.mongodb");
 const connectString = url;
-console.log({ connectString })
 const { countConnect } = require("../helpers/check.connect");
 
 class Database {
