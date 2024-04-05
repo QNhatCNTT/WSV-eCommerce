@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose"); // Erase if already required
 const DOCUMENT_NAME = "Key";
 const COLLECTION_NAME = "Keys";
 // Declare the Schema of the Mongo model
-var keytokenSchema = new Schema(
+const keytokenSchema = new Schema(
     {
         user: {
             type: Schema.Types.ObjectId,
