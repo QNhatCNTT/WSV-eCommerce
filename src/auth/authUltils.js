@@ -10,7 +10,7 @@ const HEADER = {
     API_KEY: "x-api-key",
     AUTHORIZATION: "authorization",
     CLIENT_ID: "x-client-id",
-    REFRESHTOKEN: "REFRESHTOKEN",
+    REFRESHTOKEN: "x-rtoken-id",
 };
 const createTokenPair = async (payload, publicKey, privateKey) => {
     try {

@@ -18,7 +18,6 @@ class AccessController {
     };
 
     singOut = async (req, res, next) => {
-        console.log("singOut",{req})
         new SuccessResponse({
             message: "SingOut Success!",
             metadata: await AccessService.singOut(req.keyStore),
@@ -26,11 +25,21 @@ class AccessController {
     };
 
     refreshToken = async (req, res, next) => {
+        // new SuccessResponse({
+        //     message: "Get token success!",
+        //     metadata: await AccessService.handlerRefreshToken(req.body.refreshToken),
+        // }).send(res);
+        console.log({req})
+        //fixed
         new SuccessResponse({
             message: "Get token success!",
-            metadata: await AccessService.handlerRefreshToken(req.body.refreshToken),
+            metadata: await AccessService.handlerRefreshTokenV2({
+                refreshToken: req.refreshToken,
+                user: req.user,
+                keyStore: req.keyStore,
+            }),
         }).send(res);
-    }
+    };
 }
 
 module.exports = new AccessController();
