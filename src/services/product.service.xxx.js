@@ -2,7 +2,15 @@
 
 const { BadRequestError } = require("../core/error.response");
 const { product, clothes, electronics, furniture } = require("../models/product.model");
-const { findAllDrafts, publishProductByShop, findAllPulishForShop, unPublishProductByShop, searchProduct } = require("../models/repositories/product.repo");
+const {
+    findAllDrafts,
+    publishProductByShop,
+    findAllPulishForShop,
+    unPublishProductByShop,
+    searchProduct,
+    findAllProducts,
+    findProduct,
+} = require("../models/repositories/product.repo");
 
 //define Factory class to create product
 class ProductFactory {
@@ -10,44 +18,66 @@ class ProductFactory {
         type: 'Clothing'
         payload
     */
-   static  productRegisty = {} //key-class
+    static productRegisty = {}; //key-class
 
-   static registerPrototype (type, classRef) {
-        ProductFactory.productRegisty[type] = classRef
-   }
+    static registerPrototype(type, classRef) {
+        ProductFactory.productRegisty[type] = classRef;
+    }
     static async createProduct(type, payload) {
-        const productClass = ProductFactory.productRegisty[type]
+        const productClass = ProductFactory.productRegisty[type];
 
-        if(!productClass) throw new BadRequestError(`Invalid Product Types ${type}`);
+        if (!productClass) throw new BadRequestError(`Invalid Product Types ${type}`);
         return new productClass(payload).createProduct();
     }
+
+    static async updateProduct(type, payload) {
+        const productClass = ProductFactory.productRegisty[type];
+
+        if (!productClass) throw new BadRequestError(`Invalid Product Types ${type}`);
+        return new productClass(payload).createProduct();
+    }
+
     //query
     static async findAllDrafts({ product_shop, limit = 50, skip = 0 }) {
         const query = {
             product_shop,
             isDraft: true,
-        }
-        return await findAllDrafts({ query, limit, skip })
+        };
+        return await findAllDrafts({ query, limit, skip });
     }
 
     static async findAllPublishForShop({ product_shop, limit = 50, skip = 0 }) {
         const query = {
             product_shop,
             isPublished: true,
-        }
-        return await findAllPulishForShop({ query, limit, skip })
+        };
+        return await findAllPulishForShop({ query, limit, skip });
     }
 
     static async publishProductByShop({ product_shop, product_id }) {
-        return await publishProductByShop({ product_shop, product_id })
+        return await publishProductByShop({ product_shop, product_id });
     }
 
     static async unPublishProductByShop({ product_shop, product_id }) {
-        return await unPublishProductByShop({ product_shop, product_id })
+        return await unPublishProductByShop({ product_shop, product_id });
     }
 
     static async getListSearchProduct({ keySearch }) {
-        return await searchProduct({ keySearch })
+        return await searchProduct({ keySearch });
+    }
+
+    static async findAllProducts({ limit = 50, page = 1, sort = "ctime", filter = { isPublished: true }, select }) {
+        return await findAllProducts({
+            limit,
+            page,
+            sort,
+            filter,
+            select: ["product_name", "product_thumb", "product_price"],
+        });
+    }
+
+    static async findProduct({ product_id }) {
+        return await findProduct({ product_id, unSelect: ["__v"] });
     }
 }
 
