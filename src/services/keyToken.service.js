@@ -1,7 +1,7 @@
 "use strict";
 
 const keytokenModel = require("../models/keytoken.model");
-const { Types } = require("mongoose");
+const { convertToObjectIdMongoDB } = require("../ultils");
 
 class KeyTokenService {
 
@@ -30,8 +30,8 @@ class KeyTokenService {
 
     static findByUserId = async (userId) => {
         console.log("findByUserId::", { userId });
-        console.log({ user: new Types.ObjectId(userId) });
-        return await keytokenModel.findOne({ user: new Types.ObjectId(userId) });
+        console.log({ user: convertToObjectIdMongoDB(userId) });
+        return await keytokenModel.findOne({ user: convertToObjectIdMongoDB(userId) });
     };
 
     static removeKeyById = async (id) => {
@@ -43,7 +43,7 @@ class KeyTokenService {
     }
 
     static deleteKeyById = async ( userId ) => {
-        return await keytokenModel.deleteOne({ user: new Types.ObjectId(userId) });
+        return await keytokenModel.deleteOne({ user: convertToObjectIdMongoDB(userId) });
     }
 
     static findByRefreshToken = async ( refreshToken ) => {
