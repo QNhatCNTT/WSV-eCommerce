@@ -2,7 +2,7 @@
 
 const { product, electronics, clothes, furniture } = require("../../models/product.model");
 const { Types } = require("mongoose");
-const { getSelectData, unGetSelectData } = require("../../ultils");
+const { getSelectData, unGetSelectData, convertToObjectIdMongoDB } = require("../../ultils");
 
 const findAllDrafts = async ({ query, limit, skip }) => {
     return await queryProduct({ query, limit, skip });
@@ -82,6 +82,10 @@ const updateProductById = async ({ product_id, bodyUpdate, model, isNew = true }
     return await model.findByIdAndUpdate(product_id, bodyUpdate, { new: isNew });
 };
 
+const getProductById = async ({ productId }) => {
+    return await product.findById({ _id: convertToObjectIdMongoDB(productId) }).lean();
+};
+
 module.exports = {
     findAllDrafts,
     publishProductByShop,
@@ -91,4 +95,5 @@ module.exports = {
     findAllProducts,
     findProduct,
     updateProductById,
+    getProductById,
 };
